@@ -1,0 +1,39 @@
+<!--quiz.component.html-->
+
+<div class="container">
+    <form [formGroup]="quizForm" (ngSubmit)="onSubmit()">
+        <mat-card class="quiz-card">
+            <mat-card-title>Quiz Questions</mat-card-title>
+            <mat-card-content>
+                <div *ngFor="let q of qBank" class="question">
+                    <mat-card class="question-card">
+                        <mat-card-title>{{ q.question }}</mat-card-title>
+                        <mat-card-content>
+                            <mat-radio-group [formControlName]="q.id.toString()">
+                                <mat-radio-button *ngFor="let option of q.options" [value]="option">
+                                    {{ option }}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                            <div *ngIf="showResults" class="feedback">
+                                <p *ngIf="q.selected === q.answer
+                                          && q.selected !== ''" class="correct">
+                                    Correct!</p>
+                                <p *ngIf="q.selected !== q.answer 
+                                          && q.selected !== ''" class="incorrect">
+                                    Incorrect.
+                                    Correct Answer: {{ q.answer }}</p>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-raised-button color="primary" type="submit">Submit</button>
+            </mat-card-actions>
+        </mat-card>
+
+        <div *ngIf="showResults" class="score">
+            <h2>Your Score: {{ score }} / {{ qBank.length }}</h2>
+        </div>
+    </form>
+</div>
